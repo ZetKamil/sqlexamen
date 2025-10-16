@@ -1,0 +1,114 @@
+Vraag 1.
+SELECT *
+FROM staff;
+
+Vraag 2.
+SELECT c.city_id, c.city
+FROM city c;
+
+Vraag 3.
+SELECT *
+FROM customer c
+WHERE c.active LIKE "1";
+
+Vraag 4.
+SELECT *
+FROM payment p
+WHERE p.payment_date LIKE "2005-06%";
+
+Vraag 5.
+SELECT *
+FROM rental r
+ORDER BY r.rental_date DESC
+LIMIT 15;
+
+Vraag 6.
+SELECT *
+FROM customer c
+ORDER BY c.last_name, c.first_name ASC
+LIMIT 20;
+
+Vraag 7.
+SELECT l.last_update
+FROM language l
+INSERT INTO language (last_update)
+VALUES ('NieuweCategorie', NOW());
+
+Vraag. 8
+SELECT CONCAT( l.name) AS Name, CONCAT(l.language_id) AS ID
+FROM language l;
+
+Vraag.9
+SELECT cu.first_name, cu.last_name, ci.city
+FROM city ci
+LEFT JOIN address a on ci.city_id = a.city_id
+LEFT JOIN customer cu on a.address_id = cu.address_id
+
+Vraag 10.
+SELECT staff.first_name,staff.last_name, address.address
+FROM store
+LEFT JOIN staff on store.store_id = staff.store_id
+left join address on address.address_id = staff.address_id;
+
+Vraag 11.
+SELECT store.store_id, COUNT(rental.rental_id) AS aantal
+FROM store
+left join inventory on store.store_id = inventory.store_id
+left join rental on inventory.inventory_id = rental.inventory_id
+WHERE rental.rental_date like "2005%"
+group by store.store_id
+ORDER by aantal DESC;
+
+Vraag 12.
+SELECT c.first_name, c.last_name, SUM(p.amount) as paymentAmount
+FROM customer c
+left join payment p on c.customer_id = p.customer_id
+Group by c.customer_id
+having paymentAmount >= 100
+order by paymentAmount desc;
+
+Vraag 13.
+CREATE VIEW customer_per_city
+AS
+SELECT city.city, COUNT(customer.customer_id) as aantal
+FROM city
+LEFT JOIN address on  city.city_id = address.city_id
+left join customer  on address.address_id = customer.address_id
+GROUP BY city.city;
+
+Vraag 14.
+
+Vraag 15.
+CREATE DATABASE IF NOT EXISTS projecten
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+USE projecten;
+
+-- developer
+   CREATE TABLE developer (
+   developer_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+   first_name VARCHAR(50) NOT NULL,
+   last_name VARCHAR(50) NOT NULL,
+   email VARCHAR(255) NOT NULL);
+
+   -- project
+   CREATE TABLE project (
+   project_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+   name VARCHAR(255) NOT NULL);
+
+
+
+   -- developer_project
+   CREATE TABLE developer_project (
+   developer_id INT UNSIGNED NOT NULL,
+   project_id INT UNSIGNED NOT NULL,
+   role VARCHAR(50) NOT NULL,
+   PRIMARY KEY (developer_id, project_id),
+   CONSTRAINT fk_ff_developer
+   FOREIGN KEY (developer_id)
+   REFERENCES developer(developer_id),
+   CONSTRAINT fk_ff_project
+   FOREIGN KEY (project_id)
+   REFERENCES project(project_id))
+
+
